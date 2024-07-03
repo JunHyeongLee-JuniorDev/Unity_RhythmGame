@@ -13,15 +13,19 @@ public class TimeManager : MonoBehaviour
 
              
     public List<GameObject> boxnote_List = new List<GameObject>(); //타임 메니저에서 어떤 노트인지 담기위해서
-
+    [SerializeField] private EffectManager effect;
+    [SerializeField] private ScoreManager score;
     [SerializeField] private TimeManager timeManager;
-
+    
     private void Awake()
     {
         timeManager = FindObjectOfType<TimeManager>();
     }
     private void Start()
     {
+        effect = FindObjectOfType<EffectManager>();
+        score = FindObjectOfType<ScoreManager>();
+        //*************************************************************************
         TimeBox = new Vector2[timmingRect.Length];
         //최소값과 최대값 (가로 길이의)
         //이미지의 중심을 기준으로 +- (이미지너비 / 2)
@@ -51,7 +55,9 @@ public class TimeManager : MonoBehaviour
                         n.HideNote();
                     }
                     //판정이 난 상황
-                    Debug.Log(Debug_Note(j));
+                    effect.NoteHit_Effect();
+                    effect.Judgement_Effect(j);
+                    score.AddScore(j);
                         return true;
                 }
             }

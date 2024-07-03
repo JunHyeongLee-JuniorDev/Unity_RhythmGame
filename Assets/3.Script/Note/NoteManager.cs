@@ -21,7 +21,6 @@ public class NoteManager : MonoBehaviour
         if(instance == null)
         {
             instance = this;
-            //DontDestroyOnLoad(this);
         }
 
         else
@@ -124,6 +123,7 @@ public class NoteManager : MonoBehaviour
         {
             note = Instantiate(notePrefabs, poolPos, Quaternion.identity);
             Notes.Enqueue(note);
+            note.transform.SetParent(this.transform);
             note.SetActive(false);
         }
     }
@@ -132,12 +132,9 @@ public class NoteManager : MonoBehaviour
     private void DequeueNote()
     {
         GameObject note = Notes.Dequeue();
-        Image noteImg = note.GetComponent<Image>();
 
         note.SetActive(true);
-        noteImg.enabled = true;
         note.transform.position = noteSpawner.position;
-        note.transform.SetParent(this.transform);
 
         timemanager.boxnote_List.Add(note);
     }
