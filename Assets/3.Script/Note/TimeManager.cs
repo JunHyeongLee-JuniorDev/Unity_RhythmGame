@@ -16,7 +16,8 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private EffectManager effect;
     [SerializeField] private ScoreManager score;
     [SerializeField] private TimeManager timeManager;
-    
+    [SerializeField] private ComboManger combo;
+
     private void Awake()
     {
         timeManager = FindObjectOfType<TimeManager>();
@@ -25,6 +26,7 @@ public class TimeManager : MonoBehaviour
     {
         effect = FindObjectOfType<EffectManager>();
         score = FindObjectOfType<ScoreManager>();
+        combo = FindObjectOfType<ComboManger>();
         //*************************************************************************
         TimeBox = new Vector2[timmingRect.Length];
         //최소값과 최대값 (가로 길이의)
@@ -58,6 +60,17 @@ public class TimeManager : MonoBehaviour
                     effect.NoteHit_Effect();
                     effect.Judgement_Effect(j);
                     score.AddScore(j);
+                    // j : 0 -> perfect, 1 -> cool, 2 -> good, 3 -> bad
+                    if (j < 3)
+                    {
+                        combo.Addcombo(); // 디폴트 인자가 있기 때문에 안써도 됌
+                    }
+
+                    else
+                    {
+                        combo.ResetCombo();
+                    }
+
                         return true;
                 }
             }
