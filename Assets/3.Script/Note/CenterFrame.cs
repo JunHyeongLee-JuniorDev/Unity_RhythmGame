@@ -10,13 +10,13 @@ public class CenterFrame : MonoBehaviour
         -> 충돌 -> 트리거
      */
 
-    private AudioSource source;
+    //private AudioSource source;
     private bool isStart = false;
 
-    private void Start()
-    {
-        source = GetComponent<AudioSource>();
-    }
+    //private void Start()
+    //{
+    //    source = GetComponent<AudioSource>();
+    //}
 
     private void OnTriggerEnter2D(Collider2D col)
     {
@@ -24,7 +24,8 @@ public class CenterFrame : MonoBehaviour
         {
             if (col.CompareTag("Note"))
             {
-                source.Play();
+                //source.Play();
+                AudioManager.instance.Play_BGM("Stage_1");
                 isStart = true;
             } 
         }

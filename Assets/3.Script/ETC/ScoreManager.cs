@@ -30,6 +30,9 @@ public class ScoreManager : MonoBehaviour
         scoreText.text = string.Format("{0:#,##0}", Current_Score);
         //                                  ㄴ>어떤 방식으로 쓸지정하기
         ani.SetTrigger(key);
-
+    }
+    public int GetScore()
+    {
+        return Current_Score;
     }
 }

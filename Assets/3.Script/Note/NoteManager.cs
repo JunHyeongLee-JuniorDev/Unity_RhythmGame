@@ -46,6 +46,8 @@ public class NoteManager : MonoBehaviour
     [SerializeField] 
     private GameObject notePrefabs;
 
+    private bool isnoteActive = true;
+
     [SerializeField]
     private Queue<GameObject> Notes; // 풀링용 노트큐
 
@@ -56,10 +58,14 @@ public class NoteManager : MonoBehaviour
     [SerializeField]
     private Transform noteSpawner;
     private TimeManager timemanager;
+    private ComboManger combo;
+    private EffectManager effect;
 
     private void Start()
     {
         timemanager = FindObjectOfType<TimeManager>();
+        combo = FindObjectOfType<ComboManger>();
+        effect = FindObjectOfType<EffectManager>();
 
         if (BPM >= 20)
             noteCapacity = (BPM / divider) + 1;
@@ -74,21 +80,24 @@ public class NoteManager : MonoBehaviour
 
     private void Update()
     {
-        current_time += Time.deltaTime;
-        if(current_time >= (60d / BPM))
+        if (isnoteActive)
         {
-            //******************************************************************************************************************
-            //instantiate 방식
-            //GameObject note_ob =
-            //    Instantiate(notePrefabs, noteSpawner.position, Quaternion.identity);
-            //note_ob.transform.SetParent(this.transform); // UI이기 때문에 부모 포지션으로 있어야한다(안 그럼 안 보임).
+            current_time += Time.deltaTime;
+            if (current_time >= (60d / BPM))
+            {
+                //******************************************************************************************************************
+                //instantiate 방식
+                //GameObject note_ob =
+                //    Instantiate(notePrefabs, noteSpawner.position, Quaternion.identity);
+                //note_ob.transform.SetParent(this.transform); // UI이기 때문에 부모 포지션으로 있어야한다(안 그럼 안 보임).
 
-            //timemanager.boxnote_List.Add(note_ob);
-            //instantiate 방식
-            //******************************************************************************************************************
+                //timemanager.boxnote_List.Add(note_ob);
+                //instantiate 방식
+                //******************************************************************************************************************
 
-            DequeueNote();
-            current_time -= (60d / BPM);
+                DequeueNote();
+                current_time -= (60d / BPM);
+            }
         }
     }
 
@@ -100,7 +109,9 @@ public class NoteManager : MonoBehaviour
             {
                 if(n.GetNoteFlag())
                 {
-                    Debug.Log("Miss");
+                    //Debug.Log("Miss");
+                    effect.Judgement_Effect(4);
+                    combo.ResetCombo();
                 }
             }
             EnqueueNote(col.gameObject);
@@ -146,5 +157,15 @@ public class NoteManager : MonoBehaviour
         Notes.Enqueue(note);
         note.transform.position = poolPos;
         note.SetActive(false);
+    }
+
+    public void Remove_Note()
+    {
+        isnoteActive = false;
+        for (int i = 0; i < timemanager.boxnote_List.Count; i++)
+        {
+            EnqueueNote(timemanager.boxnote_List[i]);
+        }
+        timemanager.boxnote_List.Clear();
     }
 }

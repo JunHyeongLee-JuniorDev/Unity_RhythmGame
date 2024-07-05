@@ -4,7 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Undefined
   - Note
+  - BasicPlate
   layers:
   - Default
   - TransparentFX
@@ -39,6 +41,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Rect
+    uniqueID: 1722465483
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
